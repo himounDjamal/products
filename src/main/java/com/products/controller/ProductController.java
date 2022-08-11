@@ -1,6 +1,8 @@
 package com.products.controller;
 
 import com.products.model.Produit;
+import com.products.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -8,34 +10,32 @@ import java.util.List;
 
 @RestController
 public class ProductController {
+    @Autowired
+    ProductService productService ;
     List<Produit> products = new ArrayList<>();
     List<Integer> scoreList = new ArrayList<>();
 
     @GetMapping("/product")
     public List<Produit> products() {
-
-        return products;
+       return productService.getAll();
     }
 
     @GetMapping("/product/{id}")
     public Produit product(@PathVariable Long id) {
-        return products.stream()
-                .filter(produit -> produit.getId().equals(id))
-                .findFirst()
-                .get();
+      return   productService.get(id);
     }
 
     @PostMapping("/product")
     public Produit addProduct(@RequestBody Produit item) {
-        products.add(item);
-        return item;
+        return productService.save(item);
+
     }
 
 
     @PutMapping("/product/{id}")
     public Produit updateProduct(@RequestBody Produit item ,@PathVariable(value = "id") Long id) {
-        Produit updated= null;
-        for (Produit product : products) {
+        return productService.update(id,item);
+        /*for (Produit product : products) {
             if (product.getId().equals(id)) {
                 product.setId(item.getId());
                 product.setNom(item.getNom());
@@ -44,9 +44,9 @@ public class ProductController {
                 updated = product;
             }
         }
-
+*/
        // System.out.println("n'exist pas");
-        return updated;
+
     }
 
     public String tUpdate(List<Produit> produit, Integer id) {
@@ -56,8 +56,7 @@ public class ProductController {
 
     @DeleteMapping("/product/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        products.removeIf(produit -> produit.getId().equals(id));
-     return"item was deleted";
+     return productService.delete(id);
     }
 
 
