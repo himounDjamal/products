@@ -1,5 +1,6 @@
 package com.products.service;
 
+import com.products.mapper.ProduitMapper;
 import com.products.model.Produit;
 import com.products.repository.ProductRepository;
 import com.products.repository.ProduiteEntite;
@@ -13,10 +14,15 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     ProductRepository productRepository ;
+
+
+    @Autowired
+    ProduitMapper mapper;
     public Produit get(Long id){
         Optional<ProduiteEntite> produiteEntiteO = productRepository.findById(id);
         ProduiteEntite produiteEntite = produiteEntiteO.get();
-        return mapProduit(produiteEntite);
+       return mapper.produitEntiteToProduit(produiteEntite);
+     //   return mapProduit(produiteEntite);
     }
 
     private  Produit mapProduit(ProduiteEntite produiteEntite) {
@@ -40,7 +46,7 @@ public class ProductService {
     public List<Produit> getAll() {
       return  productRepository.findAll()
                 .stream()
-                .map(this::mapProduit)
+                .map(produiteEntite -> mapper.produitEntiteToProduit(produiteEntite))
                 .toList();
     }
 
@@ -55,6 +61,6 @@ public class ProductService {
         produiteEntite.setNom(prd.getNom());
         produiteEntite.setType(prd.getType());
         ProduiteEntite saved = productRepository.save(produiteEntite);
-        return mapProduit(saved);
+        return mapper.produitEntiteToProduit(saved);
     }
 }
