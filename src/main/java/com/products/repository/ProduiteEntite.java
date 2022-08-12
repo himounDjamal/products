@@ -1,10 +1,14 @@
 package com.products.repository;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+@Data
+@NoArgsConstructor
 @Entity
 public class ProduiteEntite {
     @Id
@@ -13,27 +17,4 @@ public class ProduiteEntite {
     private String nom;
     private String type;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }
