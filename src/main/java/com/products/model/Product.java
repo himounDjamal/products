@@ -4,11 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-public class Produit implements Serializable {
+public class Product implements Serializable {
     private Long id;
     private String nom;
     private String type;
-    private PointFort pointFort;
+   //private PointFort pointFort;
+  private List<Characteristic> characteristics ;
 }

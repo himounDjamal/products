@@ -1,12 +1,17 @@
 package com.products.service;
 
-import com.products.mapper.ProduitMapper;
-import com.products.model.Produit;
+import com.products.mapper.ProductMapper;
+import com.products.model.Characteristic;
+import com.products.model.Product;
+import com.products.repository.CharacteristicEntity;
+import com.products.repository.CharacteristicRepository;
+import com.products.repository.ProductEntity;
 import com.products.repository.ProductRepository;
-import com.products.repository.ProduiteEntite;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,39 +19,57 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     ProductRepository productRepository ;
-
+    @Autowired
+    CharacteristicRepository characteristicRepository;
 
     @Autowired
-    ProduitMapper mapper;
-    public Produit get(Long id){
-        Optional<ProduiteEntite> produiteEntiteO = productRepository.findById(id);
-        ProduiteEntite produiteEntite = produiteEntiteO.get();
-       return mapper.produitEntiteToProduit(produiteEntite);
+    ProductMapper mapper;
+    public Product get(Long id){
+        Optional<ProductEntity> produiteEntiteO = productRepository.findById(id);
+        ProductEntity productEntity = produiteEntiteO.get();
+       return mapper.produtEntityToProdut(productEntity);
      //   return mapProduit(produiteEntite);
     }
 
-    private  Produit mapProduit(ProduiteEntite produiteEntite) {
-        Produit pr = new Produit();
-        pr.setId(produiteEntite.getId());
-        pr.setNom(produiteEntite.getNom());
-        pr.setType(produiteEntite.getType());
+    private Product mapProduit(ProductEntity productEntity) {
+        Product pr = new Product();
+        pr.setId(productEntity.getId());
+        pr.setNom(productEntity.getNom());
+        pr.setType(productEntity.getType());
         return pr;
     }
 
-    public Produit save(Produit produit) {
-        ProduiteEntite produiteEntite = new ProduiteEntite();
-        produiteEntite.setNom(produit.getNom());
-        produiteEntite.setType(produit.getType());
+    public Product save(Product product) {
 
-        ProduiteEntite savedPE = productRepository.save(produiteEntite);
-
-        return mapProduit(savedPE);
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setNom(product.getNom());
+        productEntity.setType(product.getType());
+     //   if ((product.getCharacteristics()!= null)){}
+        List<CharacteristicEntity> characteristicsE = mapChars( product.getCharacteristics());
+        productEntity.setCharacteristics(characteristicsE);
+        characteristicRepository.saveAll(characteristicsE);
+        ProductEntity savedPE = productRepository.save(productEntity);
+        return mapper.produtEntityToProdut(savedPE);
     }
 
-    public List<Produit> getAll() {
+    private List<CharacteristicEntity> mapChars(List<Characteristic> characteristics) {
+        if (characteristics == null) return new ArrayList<>();
+
+         return  characteristics.stream().map(this::mapChar).toList();
+    }
+
+    private CharacteristicEntity mapChar(Characteristic characteristic) {
+        CharacteristicEntity d = new CharacteristicEntity();
+        d.setId(characteristic.getId());
+        d.setName(characteristic.getName());
+        d.setLabel(characteristic.getLabel());
+        return d;
+    }
+
+    public List<Product> getAll() {
       return  productRepository.findAll()
                 .stream()
-                .map(produiteEntite -> mapper.produitEntiteToProduit(produiteEntite))
+                .map(productEntity -> mapper.produtEntityToProdut(productEntity))
                 .toList();
     }
 
@@ -55,12 +78,12 @@ public class ProductService {
         return "item deleted";
     }
 
-    public Produit update(Long id, Produit prd) {
-        Optional<ProduiteEntite> produiteEntiteO = productRepository.findById(id);
-        ProduiteEntite produiteEntite = produiteEntiteO.get();
-        produiteEntite.setNom(prd.getNom());
-        produiteEntite.setType(prd.getType());
-        ProduiteEntite saved = productRepository.save(produiteEntite);
-        return mapper.produitEntiteToProduit(saved);
+    public Product update(Long id, Product prd) {
+        Optional<ProductEntity> produiteEntiteO = productRepository.findById(id);
+        ProductEntity productEntity = produiteEntiteO.get();
+        productEntity.setNom(prd.getNom());
+        productEntity.setType(prd.getType());
+        ProductEntity saved = productRepository.save(productEntity);
+        return mapper.produtEntityToProdut(saved);
     }
 }
