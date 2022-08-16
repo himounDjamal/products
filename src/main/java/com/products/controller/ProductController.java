@@ -1,5 +1,6 @@
 package com.products.controller;
 
+import com.products.model.Characteristic;
 import com.products.model.Product;
 import com.products.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,16 @@ public class ProductController {
     @PostMapping("/product")
     public Product addProduct(@RequestBody Product item) {
         return productService.save(item);
-
     }
 
     @PutMapping("/product/{id}")
     public Product updateProduct(@RequestBody Product item , @PathVariable(value = "id") Long id) {
         return productService.update(id,item);
-
-    }
-
-    public String tUpdate(List<Product> product, Integer id) {
-        System.out.println("here");
-        return "false";
     }
 
     @DeleteMapping("/product/{id}")
     public String deleteProduct(@PathVariable Long id) {
-     return productService.delete(id);
-    }
+        return productService.delete(id);
+}
 
 }
