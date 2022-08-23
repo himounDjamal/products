@@ -9,4 +9,6 @@ public class Characteristic {
     private Long id;
     private String name;
     private String label ;
+    private Link link;
 }
+

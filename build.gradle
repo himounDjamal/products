@@ -18,14 +18,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.projectlombok:lombok:1.18.24'
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.2.Final'
-	runtimeOnly 'com.h2database:h2'
-
+	runtimeOnly 'mysql:mysql-connector-java'
+	//runtimeOnly 'com.h2database:h2'
+	// https://mavenlibs.com/maven/dependency/de.escalon.hypermedia/spring-hateoas-ext
+	implementation group: 'de.escalon.hypermedia', name: 'spring-hateoas-ext', version: '0.4.2'
+    // https://mavenlibs.com/maven/dependency/org.rnorth/mysql
+	implementation 'org.rnorth:mysql:0.9.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.5'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
-
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }

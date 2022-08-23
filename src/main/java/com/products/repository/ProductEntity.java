@@ -15,7 +15,8 @@ public class ProductEntity {
     private Long id;
     private String nom;
     private String type;
-   @OneToMany(fetch = FetchType.EAGER)
+   @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<CharacteristicEntity> characteristics;
-
+  //  @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    //private Url url;
 }
