@@ -1,16 +1,14 @@
 package com.products.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Link {
-    String relation ;
+    String rel;
     String url  ;
-    public Link(String relation, String url) {
-        this.relation = relation;
-        this.url = "http://localhost:8080/"+relation+"/"+url;
-    }
 }
 

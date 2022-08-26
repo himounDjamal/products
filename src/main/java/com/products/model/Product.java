@@ -1,6 +1,8 @@
 package com.products.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Profile;
+
 import java.io.Serializable;
 import java.util.List;
 @Data
@@ -10,5 +12,5 @@ public class Product implements Serializable {
     private String nom;
     private String type;
     private List<Characteristic> characteristics ;
-    private Link link ;
+    private List<Link> link ;
 }

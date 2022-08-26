@@ -7,36 +7,49 @@ import com.products.repository.CharacteristicEntity;
 import com.products.repository.CharacteristicRepository;
 import com.products.repository.ProductEntity;
 import com.products.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class ProductService {
+
+    @Value("${max.products:10}")
+    int  max ;
+    @Value("${baseUrl}")
+    String baseUrl;
     @Autowired
     ProductRepository productRepository ;
     @Autowired
     CharacteristicRepository characteristicRepository;
     @Autowired
     ProductMapper mapper;
+    final static Logger logger = LoggerFactory.getLogger(ProductService.class);
     public Product get(Long id){
         Optional<ProductEntity> produiteEntiteO = productRepository.findById(id);
         checkProductExistence(produiteEntiteO);
         ProductEntity productEntity = produiteEntiteO.get();
         Product pr = mapper.produtEntityToProdut(productEntity);
-        Link l = new Link("product",id.toString());
-        pr.setLink(l);
+        genererListLink(pr,id);
        return pr;
     }
     public List<Product> getAll() {
         var result =  productRepository.findAll()
                 .stream()
-                .map(productEntity -> mapper.produtEntityToProdut(productEntity)).toList();
-                result.forEach(product ->
-                        product.setLink(new Link("product",product.getId().toString())));
+                .map(productEntity -> mapper.produtEntityToProdut(productEntity))
+                .limit(max)
+                .toList();
+                /*result.forEach(product ->
+                        product.setLink(new Link("product",product.getId().toString())));*/
+                result.forEach(product -> genererListLink(product,product.getId()));
+               logger.info("numbre de {} :  {} ", "prd", result.size());
     return result;
     }
     private Product mapProduit(ProductEntity productEntity) {
@@ -48,7 +61,7 @@ public class ProductService {
         return pr;
     }
     public Product save(Product product) {
-
+        logger.debug("debut de sauvegarde");
         ProductEntity productEntity = new ProductEntity();
         productEntity.setNom(product.getNom());
         productEntity.setType(product.getType());
@@ -58,6 +71,7 @@ public class ProductService {
         productEntity.setCharacteristics(characteristicsE);
         characteristicRepository.saveAll(characteristicsE);
         ProductEntity savedPE = productRepository.save(productEntity);
+        logger.debug("Fin de sauvegarde");
         return mapper.produtEntityToProdut(savedPE);
     }
     public String delete(Long id) {
@@ -131,6 +145,7 @@ public class ProductService {
     }
     public void checkProductExistence(Optional<ProductEntity> produiteEntiteO){
         if (produiteEntiteO.isEmpty()){
+            logger.error("NOT_FOUND");
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "the product is not found"
             );
@@ -165,5 +180,12 @@ public class ProductService {
         d.setName(characteristic.getName());
         d.setLabel(characteristic.getLabel());
         return d;
+    }
+    private Product genererListLink(Product pr,Long id){
+        List<Link> link= new ArrayList<>();
+        link.add(new Link("product",baseUrl+"product/"+id.toString()));
+        link.add(new Link("characteristic",baseUrl+"product/"+id.toString()+"/characteristic"));
+        pr.setLink(link);
+        return pr;
     }
 }
