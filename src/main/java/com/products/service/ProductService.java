@@ -65,6 +65,7 @@ public class ProductService {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setNom(product.getNom());
         productEntity.setType(product.getType());
+        productEntity.setImg(product.getImg());
        // Url url = new Url("product",productEntity.getId().toString());
        // productEntity.setUrl(url);
         List<CharacteristicEntity> characteristicsE = mapChars( product.getCharacteristics());
@@ -84,6 +85,7 @@ public class ProductService {
         ProductEntity productEntity = produiteEntiteO.get();
         productEntity.setNom(prd.getNom());
         productEntity.setType(prd.getType());
+        productEntity.setImg(prd.getImg());
        // List<CharacteristicEntity> characteristicsE = mapChars( prd.getCharacteristics());
        // characteristicRepository.deleteAll(productEntity.getCharacteristics());
         //

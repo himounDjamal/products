@@ -1,13 +1,14 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'java'
 }
 
 group = 'com.products'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-
+version '1.0'
 repositories {
 	mavenCentral()
 }
@@ -20,9 +21,7 @@ dependencies {
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.2.Final'
 	runtimeOnly 'mysql:mysql-connector-java'
 	runtimeOnly 'com.h2database:h2'
-	// https://mavenlibs.com/maven/dependency/de.escalon.hypermedia/spring-hateoas-ext
 	implementation group: 'de.escalon.hypermedia', name: 'spring-hateoas-ext', version: '0.4.2'
-    // https://mavenlibs.com/maven/dependency/org.rnorth/mysql
 	implementation 'org.rnorth:mysql:0.9.3'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.5'
 
@@ -32,15 +31,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
-
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
 jar {
 	manifest {
-		attributes (
-				'Main-Class': 'com.products.ProductsApplication'
+		attributes(
+				'Main-Class': 'com.products.ProductsApplication',
 		)
 	}
 }

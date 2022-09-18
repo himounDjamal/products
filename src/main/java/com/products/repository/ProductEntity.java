@@ -15,6 +15,7 @@ public class ProductEntity {
     private Long id;
     private String nom;
     private String type;
+    private String img;
    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<CharacteristicEntity> characteristics;
   //  @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)

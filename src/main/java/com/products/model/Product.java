@@ -11,6 +11,7 @@ public class Product implements Serializable {
     private Long id;
     private String nom;
     private String type;
+    private String img;
     private List<Characteristic> characteristics ;
     private List<Link> link ;
 }

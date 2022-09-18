@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
+
 public class ProductController {
     @Autowired
     ProductService productService ;
