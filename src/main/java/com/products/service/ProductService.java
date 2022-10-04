@@ -60,12 +60,12 @@ public class ProductService {
         pr.setCharacteristics(mapCharstwo(productEntity.getCharacteristics()));
         return pr;
     }
-    public Product save(Product product) {
+    public Long save(Product product) {
         logger.debug("debut de sauvegarde");
         ProductEntity productEntity = new ProductEntity();
         productEntity.setNom(product.getNom());
         productEntity.setType(product.getType());
-        productEntity.setImg(product.getImg());
+        productEntity.setDescreption(product.getDescreption());
        // Url url = new Url("product",productEntity.getId().toString());
        // productEntity.setUrl(url);
         List<CharacteristicEntity> characteristicsE = mapChars( product.getCharacteristics());
@@ -73,7 +73,7 @@ public class ProductService {
         characteristicRepository.saveAll(characteristicsE);
         ProductEntity savedPE = productRepository.save(productEntity);
         logger.debug("Fin de sauvegarde");
-        return mapper.produtEntityToProdut(savedPE);
+        return mapper.produtEntityToProdut(savedPE).getId();
     }
     public String delete(Long id) {
         productRepository.deleteById(id);
@@ -85,7 +85,7 @@ public class ProductService {
         ProductEntity productEntity = produiteEntiteO.get();
         productEntity.setNom(prd.getNom());
         productEntity.setType(prd.getType());
-        productEntity.setImg(prd.getImg());
+        productEntity.setDescreption(prd.getDescreption());
        // List<CharacteristicEntity> characteristicsE = mapChars( prd.getCharacteristics());
        // characteristicRepository.deleteAll(productEntity.getCharacteristics());
         //

@@ -5,12 +5,14 @@ import com.products.model.Product;
 import com.products.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins ="http://localhost:3000")
 
 public class ProductController {
+
     @Autowired
     ProductService productService ;
     @GetMapping("/product")
@@ -32,9 +34,10 @@ public class ProductController {
         return productService.productCharacteristic(productid,characteristicId);
     }
     @PostMapping("/product")
-    public Product addProduct(@RequestBody Product item) {
+    public Long addProduct(@RequestBody Product item) {
         return productService.save(item);
     }
+
      @PutMapping("/product/{productid}/characteristic")
      public Product addcharacteristic(@RequestBody List<Characteristic> characteristic, @PathVariable Long productid ){
         return productService.addCharacteristic(productid,characteristic);
