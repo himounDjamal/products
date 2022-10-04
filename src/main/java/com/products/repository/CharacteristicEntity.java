@@ -7,14 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 @Data
 @NoArgsConstructor
 @Entity
-public class ProduiteEntite {
+public class CharacteristicEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private String nom;
-    private String type;
-
+    private String name;
+    private String label ;
 }
